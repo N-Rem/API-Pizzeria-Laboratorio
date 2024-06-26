@@ -24,12 +24,22 @@ namespace App.Services
 
         public ICollection<UserDto> GetAll()
         {
-            return UserDto.CreateList(_userRepository.GetAll());
+            var listUser = _userRepository.GetAll()
+                ?? throw new Exception("no existen usuarios");
+            var listUserDto = UserDto.CreateList(listUser);
+            foreach(var u in listUserDto) 
+            {
+                var listProducto = _userRepository.GetAllProductUser(u.Id);
+                var listProductoDto = ProductDto.CreateList(listProducto);
+                u.Products = listProductoDto;
+            }
+            return listUserDto;
         }
         public UserDto? GetById(int id)
         {
             var obj = UserDto.Create(_userRepository.GetById(id))
                 ?? throw new Exception("No se encontro el producto");
+
             var listPrduct = _userRepository.GetAllProductUser(id);
             var listProductDto = ProductDto.CreateList(listPrduct);
             obj.Products = listProductDto;
