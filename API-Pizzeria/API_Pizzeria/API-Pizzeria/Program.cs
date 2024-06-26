@@ -1,5 +1,7 @@
 
 
+using App.Services;
+using Domain.Entities;
 using Domain.Interface;
 using Infrastructure.Data;//Para que aceda al contexto. 
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,9 @@ builder.Configuration["ConnectionStrings:StockPizzaDBConnectionString"], b => b.
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
+builder.Services.AddScoped<UserProductRepository>();
+builder.Services.AddScoped<ProductServices>();
+builder.Services.AddScoped<UserServices>();
 
 
 var app = builder.Build();

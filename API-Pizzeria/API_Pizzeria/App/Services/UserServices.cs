@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using App.Models.Rrequest;
 using Domain.Entities;
 using Domain.Interface;
 using System;
@@ -12,9 +13,13 @@ namespace App.Services
     public class UserServices
     {
         private readonly IUserRepository _userRepository;
-        public UserServices(IUserRepository userRepository)
+        private readonly IUserProductRepository _userProductRepository;
+        private readonly IProductRepository _productRepository;
+        public UserServices(IUserRepository userRepository, IUserProductRepository userProductRepository, IProductRepository productRepository)
         {
             _userRepository = userRepository;
+            _userProductRepository = userProductRepository;
+            _productRepository = productRepository;
         }
 
         public ICollection<UserDto> GetAll()
@@ -28,34 +33,59 @@ namespace App.Services
             return obj;
         }
 
-        public void UpdateProduct(int idUser, UserDto userDto)
+        public void UpdateUser(int idUser, UserDto userDto)
         {
             var obj = _userRepository.GetById(idUser)
                 ?? throw new Exception("no se encontro el producto");
             
             _userRepository.Update(obj);
         }
-        public void DeleteProduct(int idUser)
+        public void DeleteUser(int idUser)
         {
             var obj = _userRepository.GetById(idUser)
                 ?? throw new Exception("no se encontro el producto");
             _userRepository.Delete(obj);
         }
 
-        public void CreateProduct(ProductDto productDto)
+        public void CreateUserAdmin(UserDto userDto)
         {
-            var product = new Product()
+            var user = new User()
             {
-                Id = productDto.Id,
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                Stock = productDto.Stock,
-                ImageUrl = productDto.ImageUrl,
+                UserName = userDto.UserName,
+                Password = userDto.Password,
+                Rol=User.UserRol.Admin,
+                
+            };
+            _userRepository.Add(user);
+        }
+        public void CreateUserClient(UserDto userDto)
+        {
+            var user = new User()
+            {
+                UserName = userDto.UserName,
+                Password = userDto.Password,
+                Rol = User.UserRol.Client,
 
             };
-            _productRepository.Add(product);
+            _userRepository.Add(user);
         }
+
+        public void AddToBuy(UserProductCreateRequest dto)
+        {
+            var user = _userRepository.GetById(dto.UserId)
+                ?? throw new Exception("No se encontro el useuario");
+            var product = _productRepository.GetById(dto.ProductId)
+                ?? throw new Exception("No se encontro el producto");
+            var newUserProduct = new UserProduct()
+            {
+                Product = product,
+                ProductId = dto.ProductId,
+                Quantity = dto.Quantity,
+                User = user,
+                UserId = dto.UserId,
+            };
+        }
+
 
     }
 }
