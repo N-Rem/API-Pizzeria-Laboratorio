@@ -18,7 +18,7 @@ namespace Domain.Entities
         [Required]
         public string Password { get; set; }
         [Required]
-        public UserRol rol {  get; set; }
+        public UserRol Rol {  get; set; }
 
         public ICollection<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
 
