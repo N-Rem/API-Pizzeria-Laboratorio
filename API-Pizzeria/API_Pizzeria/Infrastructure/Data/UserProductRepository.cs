@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class UserProductRepository: BaseRepository<UserProduct>
+    public class UserProductRepository: BaseRepository<UserProduct>, IUserProductRepository
     {
 
         private readonly AppDbContext _context;

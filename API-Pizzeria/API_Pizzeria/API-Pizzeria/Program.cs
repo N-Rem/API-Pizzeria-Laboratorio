@@ -23,7 +23,7 @@ builder.Configuration["ConnectionStrings:StockPizzaDBConnectionString"], b => b.
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<UserProductRepository>();
+builder.Services.AddScoped<IUserProductRepository, UserProductRepository>();
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<UserServices>();
 
