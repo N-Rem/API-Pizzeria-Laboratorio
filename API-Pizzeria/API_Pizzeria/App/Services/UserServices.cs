@@ -30,10 +30,14 @@ namespace App.Services
         {
             var obj = UserDto.Create(_userRepository.GetById(id))
                 ?? throw new Exception("No se encontro el producto");
+            var listPrduct = _userRepository.GetAllProductUser(id);
+            var listProductDto = ProductDto.CreateList(listPrduct);
+            obj.Products = listProductDto;
+             
             return obj;
         }
 
-        public void UpdateUser(int idUser, UserDto userDto)
+        public void UpdateUser(int idUser, UserRequestUpdate userDto)
         {
             var obj = _userRepository.GetById(idUser)
                 ?? throw new Exception("no se encontro el producto");
