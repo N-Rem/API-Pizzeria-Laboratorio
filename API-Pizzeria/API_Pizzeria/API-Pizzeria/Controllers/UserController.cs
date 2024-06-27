@@ -67,5 +67,12 @@ namespace API_Pizzeria.Controllers
             return Ok();
         }
 
+        [HttpPut("BuyReservationUser{idUser}")]
+        public IActionResult BuyReservation ([FromRoute]int idUser)
+        {
+            _userServices.BuyReservation(idUser);
+            return Ok();
+        }
+
     }
 }

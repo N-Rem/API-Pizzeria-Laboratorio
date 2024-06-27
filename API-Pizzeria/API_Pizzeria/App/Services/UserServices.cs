@@ -116,6 +116,18 @@ namespace App.Services
         }
 
         //---------------------
-        
+        public void BuyReservation(int id)
+        {
+            var obj = UserDto.Create(_userRepository.GetById(id))
+              ?? throw new Exception("No se encontro el producto");
+
+            var listaUserProduct = _userRepository.GetAllProductUser(id);
+            
+            foreach (var up in listaUserProduct)
+            {
+                up.Product.Stock -= up.Quantity;
+                _userProductRepository.Update(up);
+            }
+        }
     }
 }
