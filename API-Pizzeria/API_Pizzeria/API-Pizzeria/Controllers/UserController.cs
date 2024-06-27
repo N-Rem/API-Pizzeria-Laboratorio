@@ -75,7 +75,7 @@ namespace API_Pizzeria.Controllers
         }
 
 
-        [HttpGet ("PizzasOfTheUser{idUser}")]
+        [HttpGet ("PizzasOfTheUser{id}")]
         public IActionResult GetAllReservationPizzaOfUser(int id)
         {
             return Ok(_userServices.GetAllReservationPizzaOfUser(id));

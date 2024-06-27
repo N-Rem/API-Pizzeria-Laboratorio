@@ -137,7 +137,14 @@ namespace App.Services
 
             var listUserProduct = _userProductRepository.GetAll();
             var listPizzaUser = listUserProduct.Where(up => up.UserId == id).ToList();
+            foreach (var lp in listPizzaUser)
+            {
+                var pizza = _productRepository.GetById(lp.ProductId);
+                lp.Product = pizza;
+            }
+
             return UserProductDto.CreateList(listPizzaUser);
+
             //Devolver todas las reservaciones de pizza de un usuario
 
         }
