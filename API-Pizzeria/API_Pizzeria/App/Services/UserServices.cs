@@ -131,5 +131,16 @@ namespace App.Services
                 _userProductRepository.Delete(up);
             }
         }
+
+        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int id)
+        {
+
+            var listUserProduct = _userProductRepository.GetAll();
+            var listPizzaUser = listUserProduct.Where(up => up.UserId == id).ToList();
+            return UserProductDto.CreateList(listPizzaUser);
+            //Devolver todas las reservaciones de pizza de un usuario
+
+        }
+
     }
 }
