@@ -24,5 +24,11 @@ namespace Infrastructure.Data
             var listPizzaUser = _context.UserProducts.Include(up => up.Product).Where(up => up.UserId == id).ToList();
             return listPizzaUser;
         }
+
+        public void DeleteUserProduct (UserProduct product)
+        {
+            _context.Set<UserProduct>().Remove(product);
+            _context.SaveChanges();
+        }
     }
 }

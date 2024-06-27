@@ -82,10 +82,10 @@ namespace API_Pizzeria.Controllers
         }
 
 
-        [HttpGet ("DeleteOnePizzaUser{id}")]
-        public IActionResult DeleteOnePizzaUser([FromRoute] int id)
+        [HttpDelete("DeleteOnePizzaUser{idReservation}")]
+        public IActionResult DeleteOnePizzaUser([FromRoute] int idReservation)
         {
-            _userServices.DeleteUnaPizza(id);
+            _userServices.DeleteUnaPizza(idReservation);
             return Ok();
         }
     }

@@ -23,7 +23,7 @@ namespace App.Models
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserRol Rol { get; set; }
-        public ICollection<ProductDto> Products { get; set; } = new List<ProductDto>();
+        public ICollection<UserProductDto> UserProducts { get; set; } = new List<UserProductDto>();
 
         public static UserDto Create(User user)
         {

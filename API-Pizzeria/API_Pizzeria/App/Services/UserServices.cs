@@ -26,39 +26,31 @@ namespace App.Services
         {
             var listUser = _userRepository.GetAll()
                 ?? throw new Exception("no existen usuarios");
-            var listUserDto = UserDto.CreateList(listUser);
-
-            foreach (var u in listUserDto) 
+            //var listUserDto = UserDto.CreateList(listUser);
+            var listUserDto = new List<UserDto>();
+            foreach (var u in listUser) 
             {
-                var listUserProduct = _userRepository.GetAllProductUser(u.Id);
-                var listProductDto = new List<ProductDto>();
-                foreach(var up in listUserProduct)
-                {
-                    for(int i = 0;i < up.Quantity; i++)
-                    {
-                        listProductDto.Add(ProductDto.Create(up.Product));
-                    }
-                }
+                var listUserProduct = _userProductRepository.GetPizzasUser(u.Id);
+                var listaUPDto = UserProductDto.CreateList(listUserProduct);
+                var newUserDto = UserDto.Create(u);
+                newUserDto.UserProducts = listaUPDto;
+                listUserDto.Add(newUserDto);
+
             }
+            
             return listUserDto;
         }
         public UserDto? GetById(int id)
         {
-            var obj = UserDto.Create(_userRepository.GetById(id))
+            var obj = _userRepository.GetById(id);
+            var listUserProducts = _userProductRepository.GetPizzasUser(id)
                 ?? throw new Exception("No se encontro el producto");
-
-            var listaUserProduct = _userRepository.GetAllProductUser(id);
-            var listProductDto = new List<ProductDto>();
-            foreach (var up in listaUserProduct)
-            {
-                for (int i = 0; i < up.Quantity; i++)
-                {
-                    listProductDto.Add(ProductDto.Create(up.Product));
-                }
-            }
-            obj.Products = listProductDto;
-             
-            return obj;
+            var lita = UserProductDto.CreateList(listUserProducts);
+            //var listProductDto = new List<ProductDto>();
+            
+            var objDto = UserDto.Create(obj);
+            objDto.UserProducts = lita;
+            return objDto;
         }
 
         public void UpdateUser(int idUser, UserRequestUpdate userDto)
@@ -132,10 +124,9 @@ namespace App.Services
             }
         }
 
-        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int id)
+        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int idUser)
         {
-
-            var listPizzaUser = _userProductRepository.GetPizzasUser(id);
+            var listPizzaUser = _userProductRepository.GetPizzasUser(idUser);
             var listapizza= new List<Product>();
             foreach (var lp in listPizzaUser)
             {
@@ -150,7 +141,8 @@ namespace App.Services
 
         public void DeleteUnaPizza(int idResercacion)
         {
-            var pizzaToDelete = _userProductRepository.GetById(idResercacion);
+            var pizzaToDelete = _userProductRepository.GetById(idResercacion)
+            ?? throw new Exception("no se enconro la reservacion de esa pizza");
             _userProductRepository.Delete(pizzaToDelete);
         }
 
