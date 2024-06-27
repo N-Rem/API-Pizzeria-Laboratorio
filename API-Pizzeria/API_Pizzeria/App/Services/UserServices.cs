@@ -134,17 +134,24 @@ namespace App.Services
 
         public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int id)
         {
+
             var listPizzaUser = _userProductRepository.GetPizzasUser(id);
+            var listapizza= new List<Product>();
             foreach (var lp in listPizzaUser)
             {
                 var pizza = _productRepository.GetById(lp.ProductId);
-                lp.Product = pizza;
+                listapizza.Add(pizza);
             }
 
             return UserProductDto.CreateList(listPizzaUser);
 
             //Devolver todas las reservaciones de pizza de un usuario
+        }
 
+        public void DeleteUnaPizza(int idResercacion)
+        {
+            var pizzaToDelete = _userProductRepository.GetById(idResercacion);
+            _userProductRepository.Delete(pizzaToDelete);
         }
 
     }

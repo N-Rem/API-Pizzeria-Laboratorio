@@ -75,10 +75,18 @@ namespace API_Pizzeria.Controllers
         }
 
 
-        [HttpGet ("PizzasOfTheUser{id}")]
-        public IActionResult GetAllReservationPizzaOfUser(int id)
+        [HttpGet ("PizzasOfTheUser{idUser}")]
+        public IActionResult GetAllReservationPizzaOfUser(int idUser)
         {
-            return Ok(_userServices.GetAllReservationPizzaOfUser(id));
+             return Ok(_userServices.GetAllReservationPizzaOfUser(idUser));
+        }
+
+
+        [HttpGet ("DeleteOnePizzaUser{id}")]
+        public IActionResult DeleteOnePizzaUser([FromRoute] int id)
+        {
+            _userServices.DeleteUnaPizza(id);
+            return Ok();
         }
     }
 }
