@@ -36,7 +36,7 @@ namespace API_Pizzeria.Controllers
                 return Ok(_userServices.GetByNamePass(user));
             } catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
