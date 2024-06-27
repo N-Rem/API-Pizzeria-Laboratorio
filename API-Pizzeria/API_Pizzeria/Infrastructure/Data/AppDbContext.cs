@@ -32,9 +32,7 @@ namespace Infrastructure.Data
                 .HasForeignKey(up => up.UserId);
 
             modelBuilder.Entity<UserProduct>()
-                .HasOne(up => up.Product)
-                .WithMany(p => p.UserProducts)
-                .HasForeignKey(up => up.ProductId);
+                .HasOne(up => up.Product);
 
 
             modelBuilder.Entity<User>()

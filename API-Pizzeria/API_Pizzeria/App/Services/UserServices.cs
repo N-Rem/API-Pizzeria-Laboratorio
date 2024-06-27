@@ -134,7 +134,7 @@ namespace App.Services
             }
         }
 
-        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int idUser)
+        /*public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int idUser)
         {
             var listPizzaUser = _userProductRepository.GetPizzasUser(idUser);
             var listapizza= new List<Product>();
@@ -147,11 +147,41 @@ namespace App.Services
             return UserProductDto.CreateList(listPizzaUser);
 
             //Devolver todas las reservaciones de pizza de un usuario
+        }*/
+        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int idUser)
+        {
+            // Obtener todas las reservas de pizza de un usuario
+            var listPizzaUser = _userProductRepository.GetPizzasUser(idUser);
+
+            // Crear una lista de UserProductDto
+            var listUserProductDto = new List<UserProductDto>();
+
+            foreach (var userProduct in listPizzaUser)
+            {
+                // Buscar el producto por su id
+                var product = _productRepository.GetById(userProduct.ProductId);
+
+                // Crear el dto y asignar el producto completo
+                var userProductDto = new UserProductDto
+                {
+                    Id = userProduct.Id,
+                    UserId = userProduct.UserId,
+                    ProductId = userProduct.ProductId,
+                    Product = product,
+                    Quantity = userProduct.Quantity
+                };
+
+                // Añadir el dto a la lista
+                listUserProductDto.Add(userProductDto);
+            }
+
+            return listUserProductDto;
         }
 
-        public void DeleteUnaPizza(int idResercacion)
+
+        public void DeleteUnaPizza(int idReservacion)
         {
-            var pizzaToDelete = _userProductRepository.GetById(idResercacion)
+            var pizzaToDelete = _userProductRepository.GetById(idReservacion)
             ?? throw new Exception("no se enconro la reservacion de esa pizza");
             _userProductRepository.Delete(pizzaToDelete);
         }

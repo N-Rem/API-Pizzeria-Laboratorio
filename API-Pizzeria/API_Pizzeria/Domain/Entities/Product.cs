@@ -29,6 +29,6 @@ namespace Domain.Entities
         [Required]
         public string ImageUrl { get; set; }
 
-        public ICollection<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
+        //public ICollection<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
     }
 }
