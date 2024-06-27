@@ -113,6 +113,7 @@ namespace App.Services
                 UserId = dto.UserId,
             };
             _userProductRepository.Add(newUserProduct);
+
         }
 
         //---------------------
@@ -127,6 +128,7 @@ namespace App.Services
             {
                 up.Product.Stock -= up.Quantity;
                 _userProductRepository.Update(up);
+                _userProductRepository.Delete(up);
             }
         }
     }
