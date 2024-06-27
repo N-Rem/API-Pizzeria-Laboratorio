@@ -9,5 +9,6 @@ namespace Domain.Interface
 {
     public interface IUserProductRepository : IBaseRepository<UserProduct>
     {
+        ICollection<UserProduct> GetPizzasUser(int id);
     }
 }

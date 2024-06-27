@@ -28,6 +28,17 @@ namespace API_Pizzeria.Controllers
             return Ok(_userServices.GetById(id));
 
         }
+        [HttpPost("login")]
+        public IActionResult login([FromBody] UserCreateRequest user) 
+        {
+            try
+            {
+                return Ok(_userServices.GetByNamePass(user));
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpDelete ("DeleteId{id}")]
         public IActionResult DeleteUser(int id)
@@ -71,6 +82,18 @@ namespace API_Pizzeria.Controllers
         public IActionResult BuyReservation ([FromRoute]int idUser)
         {
             _userServices.BuyReservation(idUser);
+            return Ok();
+        }
+        [HttpGet("UserPizzas{idUser}")]
+        public IActionResult GetAllReservationPizzaOfUser(int idUser)
+        {
+            return Ok(_userServices.GetAllReservationPizzaOfUser(idUser));
+        }
+
+        [HttpGet("DeleteOnePizzaUser{id}")]
+        public IActionResult DeleteOnePizzaUser([FromRoute] int id)
+        {
+            _userServices.DeleteUnaPizza(id);
             return Ok();
         }
 

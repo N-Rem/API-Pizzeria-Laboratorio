@@ -17,7 +17,12 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+        public ICollection<UserProduct> GetPizzasUser(int id)
+        {
+            var listPizzaUser = _context.UserProducts.Include(up => up.Product).Where(up => up.UserId == id).ToList();
+            return listPizzaUser;
+        }
 
-        
+
     }
 }

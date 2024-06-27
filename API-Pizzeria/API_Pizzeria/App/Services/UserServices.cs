@@ -57,8 +57,16 @@ namespace App.Services
                 }
             }
             obj.Products = listProductDto;
-             
+
             return obj;
+        }
+        public UserDto? GetByNamePass(UserCreateRequest userRequest)
+        {
+            var username = userRequest.Username;
+            var pass = userRequest.Password;
+            var user = UserDto.Create(_userRepository.GetByNamePass(username, pass));
+
+            return user;
         }
 
         public void UpdateUser(int idUser, UserRequestUpdate userDto)
@@ -77,6 +85,11 @@ namespace App.Services
 
         public void CreateUserAdmin(UserDto userDto)
         {
+            var existingUser = _userRepository.GetByName(userDto.UserName);
+            if (existingUser != null)
+            {
+                throw new Exception("User already exists");
+            }
             var user = new User()
             {
                 UserName = userDto.UserName,
@@ -88,6 +101,12 @@ namespace App.Services
         }
         public void CreateUserClient(UserDto userDto)
         {
+            var existingUser = _userRepository.GetByName(userDto.UserName);
+            if (existingUser != null)
+            {
+                throw new Exception("User already exists");
+            }
+
             var user = new User()
             {
                 UserName = userDto.UserName,
@@ -130,6 +149,28 @@ namespace App.Services
                 _userProductRepository.Update(up);
                 _userProductRepository.Delete(up);
             }
+        }
+        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int id)
+        {
+
+            var listPizzaUser = _userProductRepository.GetPizzasUser(id);
+            var listapizza = new List<Product>();
+            foreach (var lp in listPizzaUser)
+            {
+                var pizza = _productRepository.GetById(lp.ProductId);
+                lp.Product = pizza;
+                listapizza.Add(pizza);
+            }
+
+            return UserProductDto.CreateList(listPizzaUser);
+
+            //Devolver todas las reservaciones de pizza de un usuario
+        }
+
+        public void DeleteUnaPizza(int idResercacion)
+        {
+            var pizzaToDelete = _userProductRepository.GetById(idResercacion);
+            _userProductRepository.Delete(pizzaToDelete);
         }
     }
 }
