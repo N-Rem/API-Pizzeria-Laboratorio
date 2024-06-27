@@ -20,7 +20,7 @@ namespace Infrastructure.Data
         public ICollection<UserProduct>? GetAllProductUser(int idUser)
         {
             //se cambia la manerea de traer la lista de todas las reservaciones del usuario. 
-            var productos = _context.UserProducts.Include(up => up.Product).Where(u => u.Id == idUser).ToList()
+            var productos = _context.UserProducts.Include(up => up.Product).Where(up => up.UserId == idUser).ToList()
                  ?? throw new Exception("No se encontro productos del usuario");
             return productos;
         }

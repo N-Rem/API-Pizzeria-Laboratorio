@@ -112,6 +112,7 @@ namespace App.Services
                 User = user,
                 UserId = dto.UserId,
             };
+            _userProductRepository.Add(newUserProduct);
         }
 
         //---------------------
