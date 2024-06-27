@@ -88,5 +88,17 @@ namespace API_Pizzeria.Controllers
             _userServices.DeleteUnaPizza(idReservation);
             return Ok();
         }
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] UserRequestUpdate user)
+        {
+            try
+            {
+                return Ok(_userServices.Login(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

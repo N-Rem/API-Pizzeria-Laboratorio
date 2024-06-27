@@ -69,6 +69,11 @@ namespace App.Services
 
         public void CreateUserAdmin(UserDto userDto)
         {
+            var existingUser = _userRepository.GetByName(userDto.UserName);
+            if (existingUser != null)
+            {
+                throw new Exception("User already exists");
+            }
             var user = new User()
             {
                 UserName = userDto.UserName,
@@ -80,6 +85,11 @@ namespace App.Services
         }
         public void CreateUserClient(UserDto userDto)
         {
+            var existingUser = _userRepository.GetByName(userDto.UserName);
+            if (existingUser != null)
+            {
+                throw new Exception("User already exists");
+            }
             var user = new User()
             {
                 UserName = userDto.UserName,
@@ -144,6 +154,14 @@ namespace App.Services
             var pizzaToDelete = _userProductRepository.GetById(idResercacion)
             ?? throw new Exception("no se enconro la reservacion de esa pizza");
             _userProductRepository.Delete(pizzaToDelete);
+        }
+        public UserDto? Login(UserRequestUpdate userRequest)
+        {
+            var username = userRequest.UserName;
+            var pass = userRequest.Password;
+            var user = UserDto.Create(_userRepository.GetByNamePass(username, pass));
+
+            return user;
         }
 
     }
