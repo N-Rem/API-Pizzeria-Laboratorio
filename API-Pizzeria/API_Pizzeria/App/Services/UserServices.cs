@@ -134,9 +134,7 @@ namespace App.Services
 
         public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int id)
         {
-
-            var listUserProduct = _userProductRepository.GetAll();
-            var listPizzaUser = listUserProduct.Where(up => up.UserId == id).ToList();
+            var listPizzaUser = _userProductRepository.GetPizzasUser(id);
             foreach (var lp in listPizzaUser)
             {
                 var pizza = _productRepository.GetById(lp.ProductId);
