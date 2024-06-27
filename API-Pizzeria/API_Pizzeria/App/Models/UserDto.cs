@@ -33,18 +33,7 @@ namespace App.Models
             dto.UserName = user.UserName;
             dto.Password = user.Password;
             dto.Rol = user.Rol;
-            //dto.Products = ProductDto.CreateList(user.Products);
-
-            var listProduct = new List<Product>();
-            foreach (var up in user.UserProducts)
-            {
-                for (int i = 1; i <= up.Quantity; i++)
-                {
-                    listProduct.Add(up.Product);
-                }
-            }
-            dto.Products = ProductDto.CreateList(listProduct);
-
+            
 
             return dto;
         }

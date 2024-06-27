@@ -17,20 +17,12 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public ICollection<Product>? GetAllProductUser(int idUser)
+        public ICollection<UserProduct>? GetAllProductUser(int idUser)
         {
-            var products = _context.Users
-                .Include(u => u.UserProducts)
-                .ThenInclude(up => up.Product)
-                .Where(u => u.Id == idUser)
-                .SelectMany(u => u.UserProducts.Select(up => up.Product))
-                .ToList();
-            //SelectMany toma la colección de colecciones de productos y las mete en una colección de productos.
-            if (products == null || products.Count == 0)
-            {
-                 throw new Exception("No se encontro reservas del usuario");
-            }
-            return products;
+            //se cambia la manerea de traer la lista de todas las reservaciones del usuario. 
+            var productos = _context.UserProducts.Include(up => up.Product).Where(u => u.Id == idUser).ToList()
+                 ?? throw new Exception("No se encontro productos del usuario");
+            return productos;
         }
 
         public User GetByName(string name, string pass)

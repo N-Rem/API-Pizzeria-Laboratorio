@@ -53,7 +53,7 @@ namespace API_Pizzeria.Controllers
 
 
         [HttpPut("IdUserUpdate{id}")]
-        public IActionResult UpdateUser([FromRoute] int idUser, [FromBody] UserDto user)
+        public IActionResult UpdateUser([FromRoute] int idUser, [FromBody] UserRequestUpdate user)
         
         {
             _userServices.UpdateUser(idUser, user);

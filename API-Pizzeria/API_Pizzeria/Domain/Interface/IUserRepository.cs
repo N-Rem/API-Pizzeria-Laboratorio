@@ -9,7 +9,7 @@ namespace Domain.Interface
 {
     public interface IUserRepository: IBaseRepository<User>
     {
-        ICollection<Product>? GetAllProductUser(int idUser);
+        ICollection<UserProduct>? GetAllProductUser(int idUser);
         User GetByName(string name, string pass);
     }
 }

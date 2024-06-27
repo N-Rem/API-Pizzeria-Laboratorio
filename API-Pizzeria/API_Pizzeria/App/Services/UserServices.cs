@@ -27,11 +27,18 @@ namespace App.Services
             var listUser = _userRepository.GetAll()
                 ?? throw new Exception("no existen usuarios");
             var listUserDto = UserDto.CreateList(listUser);
-            foreach(var u in listUserDto) 
+
+            foreach (var u in listUserDto) 
             {
-                var listProducto = _userRepository.GetAllProductUser(u.Id);
-                var listProductoDto = ProductDto.CreateList(listProducto);
-                u.Products = listProductoDto;
+                var listUserProduct = _userRepository.GetAllProductUser(u.Id);
+                var listProductDto = new List<ProductDto>();
+                foreach(var up in listUserProduct)
+                {
+                    for(int i = 0;i < up.Quantity; i++)
+                    {
+                        listProductDto.Add(ProductDto.Create(up.Product));
+                    }
+                }
             }
             return listUserDto;
         }
@@ -40,8 +47,15 @@ namespace App.Services
             var obj = UserDto.Create(_userRepository.GetById(id))
                 ?? throw new Exception("No se encontro el producto");
 
-            var listPrduct = _userRepository.GetAllProductUser(id);
-            var listProductDto = ProductDto.CreateList(listPrduct);
+            var listaUserProduct = _userRepository.GetAllProductUser(id);
+            var listProductDto = new List<ProductDto>();
+            foreach (var up in listaUserProduct)
+            {
+                for (int i = 0; i < up.Quantity; i++)
+                {
+                    listProductDto.Add(ProductDto.Create(up.Product));
+                }
+            }
             obj.Products = listProductDto;
              
             return obj;
@@ -100,6 +114,7 @@ namespace App.Services
             };
         }
 
-
+        //---------------------
+        
     }
 }
