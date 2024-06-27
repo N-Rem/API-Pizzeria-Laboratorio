@@ -15,6 +15,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 //Se crea la base de datos
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(
@@ -36,6 +46,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 
