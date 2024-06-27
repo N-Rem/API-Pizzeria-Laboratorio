@@ -25,10 +25,15 @@ namespace Infrastructure.Data
             return productos;
         }
 
-        public User GetByName(string name, string pass)
+        public User GetByNamePass(string name, string pass)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == name && u.Password == pass)
                 ?? throw new Exception("No Se encontro el usuario");
+            return user;
+        }
+        public User GetByName(string name)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == name);
             return user;
         }
 
