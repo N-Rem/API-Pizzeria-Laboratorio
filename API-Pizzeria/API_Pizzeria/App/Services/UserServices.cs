@@ -156,6 +156,7 @@ namespace App.Services
             // Crear una lista de del Dto
             //var listPizzaOfUserDto = new List<PizzasOfUserDto>();
 
+            //No entiendo como funciona eso de craar un diccionario, Me ayudo chatgpt en esto. 
             var groupedPizzas = new Dictionary<string, PizzasOfUserDto>();
 
             foreach (var r in reservacion)
@@ -167,6 +168,7 @@ namespace App.Services
                 // Crear el dto y asignar el producto completo
                 var dto = PizzasOfUserDto.CreatePizzaOfUserDto(r);
 
+                //Aca pregunta si la key del diccionario es igual al nombre del dto.
                 if (groupedPizzas.ContainsKey(dto.Name))
                 {
                   //Si lla existe el producto solo suma la cantidad
@@ -174,7 +176,7 @@ namespace App.Services
                 }
                 else
                 {
-                    //si no existe lo agrega
+                    //si no existe lo agrega 
                     groupedPizzas[dto.Name] = dto;
 
                 }
