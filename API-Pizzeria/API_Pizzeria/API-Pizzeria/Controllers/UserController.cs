@@ -100,5 +100,12 @@ namespace API_Pizzeria.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("DeleteOfReservationPizza{IdPizza}User{idUser}")]
+        public IActionResult DeletePizzaOfReservation([FromRoute]int idPizza,[FromRoute] int idUser)
+        {
+            _userServices.DeletePizzaOfReservation(idPizza, idUser);
+            return Ok();
+        }
     }
 }

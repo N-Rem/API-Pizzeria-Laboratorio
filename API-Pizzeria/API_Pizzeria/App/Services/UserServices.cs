@@ -156,7 +156,7 @@ namespace App.Services
             // Crear una lista de del Dto
             //var listPizzaOfUserDto = new List<PizzasOfUserDto>();
 
-            //No entiendo como funciona eso de craar un diccionario, Me ayudo chatgpt en esto. 
+            //Se crea un diccionaro que contiene como clave-key el nombre de cada pizza (para que no se repitan). 
             var groupedPizzas = new Dictionary<string, PizzasOfUserDto>();
 
             foreach (var r in reservacion)
@@ -176,7 +176,7 @@ namespace App.Services
                 }
                 else
                 {
-                    //si no existe lo agrega 
+                    //si no existe lo agrega otra key y se guarda el nuevo dto.
                     groupedPizzas[dto.Name] = dto;
 
                 }
@@ -203,5 +203,18 @@ namespace App.Services
             return user;
         }
 
+        public void DeletePizzaOfReservation (int idPizza, int idUser)
+        {
+            var reservacion = _userProductRepository.GetPizzasUser(idUser);
+            foreach(var r in reservacion) 
+            {
+                var product = _productRepository.GetById(r.ProductId)
+                    ?? throw new Exception("no se encontro le porducto.");
+                if (product.Id == idPizza)
+                {
+                    _userProductRepository.Delete(r);
+                }
+            }
+        }
     }
 }
