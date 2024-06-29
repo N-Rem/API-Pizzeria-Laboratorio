@@ -148,34 +148,43 @@ namespace App.Services
 
             //Devolver todas las reservaciones de pizza de un usuario
         }*/
-        public ICollection<UserProductDto> GetAllReservationPizzaOfUser(int idUser)
+        public ICollection<PizzasOfUserDto> GetAllReservationPizzaOfUser(int idUser)
         {
             // Obtener todas las reservas de pizza de un usuario
-            var listPizzaUser = _userProductRepository.GetPizzasUser(idUser);
+            var reservacion = _userProductRepository.GetPizzasUser(idUser);
 
-            // Crear una lista de UserProductDto
-            var listUserProductDto = new List<UserProductDto>();
+            // Crear una lista de del Dto
+            //var listPizzaOfUserDto = new List<PizzasOfUserDto>();
 
-            foreach (var userProduct in listPizzaUser)
+            var groupedPizzas = new Dictionary<string, PizzasOfUserDto>();
+
+            foreach (var r in reservacion)
             {
                 // Buscar el producto por su id
-                var product = _productRepository.GetById(userProduct.ProductId);
-
+                var product = _productRepository.GetById(r.ProductId)
+                    ?? throw new Exception("no se encontro le porducto.");
+                r.Product = product;
                 // Crear el dto y asignar el producto completo
-                var userProductDto = new UserProductDto
+                var dto = PizzasOfUserDto.CreatePizzaOfUserDto(r);
+
+                if (groupedPizzas.ContainsKey(dto.Name))
                 {
-                    Id = userProduct.Id,
-                    UserId = userProduct.UserId,
-                    ProductId = userProduct.ProductId,
-                    Product = product,
-                    Quantity = userProduct.Quantity
-                };
+                  //Si lla existe el producto solo suma la cantidad
+                    groupedPizzas[dto.Name].Quantity += dto.Quantity;
+                }
+                else
+                {
+                    //si no existe lo agrega
+                    groupedPizzas[dto.Name] = dto;
+
+                }
 
                 // Añadir el dto a la lista
-                listUserProductDto.Add(userProductDto);
+                //listPizzaOfUserDto.Add(dto);
             }
+            var listPizzaOfUserDto = groupedPizzas.Values.ToList();
 
-            return listUserProductDto;
+            return listPizzaOfUserDto;
         }
 
 
