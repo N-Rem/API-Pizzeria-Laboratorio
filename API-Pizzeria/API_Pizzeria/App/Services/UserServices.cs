@@ -179,8 +179,6 @@ namespace App.Services
 
                 }
 
-                // Añadir el dto a la lista
-                //listPizzaOfUserDto.Add(dto);
             }
             var listPizzaOfUserDto = groupedPizzas.Values.ToList();
 
