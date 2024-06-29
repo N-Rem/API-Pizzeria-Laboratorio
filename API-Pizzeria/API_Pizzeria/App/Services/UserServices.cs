@@ -203,14 +203,14 @@ namespace App.Services
             return user;
         }
 
-        public void DeletePizzaOfReservation (int idPizza, int idUser)
+        public void DeletePizzaOfReservation (string namePizza, int idUser)
         {
             var reservacion = _userProductRepository.GetPizzasUser(idUser);
             foreach(var r in reservacion) 
             {
                 var product = _productRepository.GetById(r.ProductId)
                     ?? throw new Exception("no se encontro le porducto.");
-                if (product.Id == idPizza)
+                if (product.Name == namePizza)
                 {
                     _userProductRepository.Delete(r);
                 }
