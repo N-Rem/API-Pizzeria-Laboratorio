@@ -101,8 +101,8 @@ namespace API_Pizzeria.Controllers
             }
         }
 
-        [HttpDelete("DeleteOfReservationPizza{namePizza}/User{idUser}")]
-        public IActionResult DeletePizzaOfReservation([FromRoute]string namePizza,[FromRoute] int idUser)
+        [HttpDelete("DeleteOfReservationPizza{idUser}")]
+        public IActionResult DeletePizzaOfReservation([FromRoute]string namePizza,[FromQuery] int idUser)
         {
             _userServices.DeletePizzaOfReservation(namePizza, idUser);
             return Ok();
