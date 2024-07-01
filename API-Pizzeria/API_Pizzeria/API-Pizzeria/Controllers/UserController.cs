@@ -40,15 +40,23 @@ namespace API_Pizzeria.Controllers
         [HttpPost("CreateAdmin")]
         public IActionResult CreateAdmin([FromBody] UserDto user)
         {
-            _userServices.CreateUserAdmin(user);
-            return Ok();
+            var newUser = _userServices.CreateUserAdmin(user);
+            if (newUser != null)
+            {
+                return Ok(newUser);
+            }
+            return BadRequest();
         }
 
         [HttpPost("CreateClient")]
         public IActionResult CreateClient([FromBody] UserDto user)
         {
-            _userServices.CreateUserClient(user);
-            return Ok();
+            var newUser = _userServices.CreateUserClient(user);
+            if (newUser != null)
+            {
+                return Ok(newUser);
+            }
+            return BadRequest();
         }
 
 
@@ -91,14 +99,12 @@ namespace API_Pizzeria.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserRequestUpdate user)
         {
-            try
+            var existingUser = _userServices.Login(user);
+            if (existingUser != null)
             {
-                return Ok(_userServices.Login(user));
+                return Ok(existingUser);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NotFound();
         }
 
         [HttpDelete("DeleteOfReservationPizza{idUser}")]

@@ -27,8 +27,11 @@ namespace Infrastructure.Data
 
         public User GetByNamePass(string name, string pass)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == name && u.Password == pass)
-                ?? throw new Exception("No Se encontro el usuario");
+            var user = _context.Users.FirstOrDefault(u => u.UserName == name && u.Password == pass);
+            if (user == null)
+            {
+                return null;
+            }
             return user;
         }
         public User GetByName(string name)
