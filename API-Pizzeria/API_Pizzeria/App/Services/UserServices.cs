@@ -24,8 +24,7 @@ namespace App.Services
 
         public ICollection<UserDto> GetAll()
         {
-            var listUser = _userRepository.GetAll()
-                ?? throw new Exception("no existen usuarios");
+            var listUser = _userRepository.GetAll();
             //var listUserDto = UserDto.CreateList(listUser);
             var listUserDto = new List<UserDto>();
             foreach (var u in listUser) 
@@ -43,13 +42,16 @@ namespace App.Services
         public UserDto? GetById(int id)
         {
             var obj = _userRepository.GetById(id);
-            var listUserProducts = _userProductRepository.GetPizzasUser(id)
-                ?? throw new Exception("No se encontro el producto");
-            var lita = UserProductDto.CreateList(listUserProducts);
+            if (obj == null)
+            {
+                return null;
+            }
+            var listUserProducts = _userProductRepository.GetPizzasUser(id);
+            var lista = UserProductDto.CreateList(listUserProducts);
             //var listProductDto = new List<ProductDto>();
             
             var objDto = UserDto.Create(obj);
-            objDto.UserProducts = lita;
+            objDto.UserProducts = lista;
             return objDto;
         }
 
@@ -67,12 +69,12 @@ namespace App.Services
             _userRepository.Delete(obj);
         }
 
-        public void CreateUserAdmin(UserDto userDto)
+        public User CreateUserAdmin(UserDto userDto)
         {
             var existingUser = _userRepository.GetByName(userDto.UserName);
             if (existingUser != null)
             {
-                throw new Exception("User already exists");
+                return null;
             }
             var user = new User()
             {
@@ -82,13 +84,14 @@ namespace App.Services
                 
             };
             _userRepository.Add(user);
+            return user;
         }
-        public void CreateUserClient(UserDto userDto)
+        public User CreateUserClient(UserDto userDto)
         {
             var existingUser = _userRepository.GetByName(userDto.UserName);
             if (existingUser != null)
             {
-                throw new Exception("User already exists");
+                return null;
             }
             var user = new User()
             {
@@ -98,6 +101,7 @@ namespace App.Services
 
             };
             _userRepository.Add(user);
+            return user; 
         }
 
         public void AddToBuy(UserProductCreateRequest dto)
@@ -162,8 +166,7 @@ namespace App.Services
             foreach (var r in reservacion)
             {
                 // Buscar el producto por su id
-                var product = _productRepository.GetById(r.ProductId)
-                    ?? throw new Exception("no se encontro le porducto.");
+                var product = _productRepository.GetById(r.ProductId);
                 r.Product = product;
                 // Crear el dto y asignar el producto completo
                 var dto = PizzasOfUserDto.CreatePizzaOfUserDto(r);
@@ -198,7 +201,12 @@ namespace App.Services
         {
             var username = userRequest.UserName;
             var pass = userRequest.Password;
-            var user = UserDto.Create(_userRepository.GetByNamePass(username, pass));
+            var existingUser = _userRepository.GetByNamePass(username, pass);
+            if (existingUser == null)
+            {
+                return null;
+            }
+            var user = UserDto.Create(existingUser);
 
             return user;
         }
