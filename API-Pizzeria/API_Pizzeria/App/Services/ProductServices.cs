@@ -23,8 +23,9 @@ namespace App.Services
         }
         public ProductDto? GetById(int id)
         {
-            var obj = ProductDto.Create(_productRepository.GetById(id))
+            var objEntity = _productRepository.GetById(id)
                 ?? throw new Exception("No se encontro el producto");
+            var obj = ProductDto.Create(objEntity);
             return obj;
         }
 
